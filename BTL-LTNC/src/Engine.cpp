@@ -49,6 +49,11 @@ void Engine::Events(){
 }
 
 bool Engine::Clean(){
+    TextureManager::GetInstance()->Clean();
+    SDL_DestroyRenderer ( m_Renderer );
+    SDL_DestroyWindow ( m_Window );
+    IMG_Quit();
+    SDL_Quit();
 
 }
 
