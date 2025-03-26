@@ -1,4 +1,5 @@
 #include "Engine.h"
+#include "TextureManager.h"
 
 Engine* Engine::s_Instance = nullptr;
 
@@ -20,6 +21,7 @@ bool Engine::Init(){
         return false;
     }
 
+    TextureManager::GetInstance()->Load( "yellow" , "assets/Spongebob.png" );
     return m_IsRunning = true;
 }
 
@@ -31,6 +33,8 @@ void Engine::Update(){
 void Engine::Render(){
     SDL_SetRenderDrawColor( m_Renderer, 0 , 0 , 0 , 0 );
     SDL_RenderClear(m_Renderer);
+
+    TextureManager::GetInstance()->Draw( "yellow", 100, 100, 495 , 350 );
     SDL_RenderPresent(m_Renderer);
 }
 
