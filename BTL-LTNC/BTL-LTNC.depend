@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1742909985 source:c:\users\pc\documents\codeblock\btl-ltnc\main.cpp
+	"Engine.h"
+
+1742876605 c:\users\pc\documents\codeblock\btl-ltnc\src\core\engine.h
+
+1742876089 source:c:\users\pc\documents\codeblock\btl-ltnc\src\core\engine.cpp
+	"Engine.h"
+	<iostream>
+
+1742911879 c:\users\pc\documents\codeblock\btl-ltnc\src\engine.h
+	"SDL.h"
+	"SDL_image.h"
+
+1742953720 source:c:\users\pc\documents\codeblock\btl-ltnc\src\engine.cpp
+	"Engine.h"
+
