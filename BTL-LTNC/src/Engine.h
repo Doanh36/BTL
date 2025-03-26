@@ -3,6 +3,7 @@
 
 #include "SDL.h"
 #include "SDL_image.h"
+#include "Map.h"
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 480
@@ -26,6 +27,7 @@ class Engine {
         inline SDL_Renderer* GetRenderer() { return m_Renderer; }
 
     private:
+        Map* gameMap;
         Engine(){}
         SDL_Window* m_Window;
         SDL_Renderer* m_Renderer;

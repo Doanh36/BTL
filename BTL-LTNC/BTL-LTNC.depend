@@ -8,10 +8,32 @@
 	"Engine.h"
 	<iostream>
 
-1742911879 c:\users\pc\documents\codeblock\btl-ltnc\src\engine.h
+1742973125 c:\users\pc\documents\codeblock\btl-ltnc\src\engine.h
 	"SDL.h"
 	"SDL_image.h"
+	"Map.h"
 
-1742953720 source:c:\users\pc\documents\codeblock\btl-ltnc\src\engine.cpp
+1742973267 source:c:\users\pc\documents\codeblock\btl-ltnc\src\engine.cpp
 	"Engine.h"
+	"TextureManager.h"
+
+1742961725 c:\users\pc\documents\codeblock\btl-ltnc\graphics\texturemanager.h
+	<string>
+	"SDL.h"
+	<map>
+
+1742961842 c:\users\pc\documents\codeblock\btl-ltnc\src\graphics\texturemanager.h
+	<string>
+	"SDL.h"
+	<map>
+
+1742963148 source:c:\users\pc\documents\codeblock\btl-ltnc\src\graphics\texturemanager.cpp
+	"TextureManager.h"
+	"Engine.h"
+
+1742973125 c:\users\pc\documents\codeblock\btl-ltnc\src\map.h
+	<SDL.h>
+
+1742973125 source:c:\users\pc\documents\codeblock\btl-ltnc\src\map.cpp
+	"Map.h"
 

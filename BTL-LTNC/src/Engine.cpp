@@ -21,7 +21,10 @@ bool Engine::Init(){
         return false;
     }
 
-    TextureManager::GetInstance()->Load( "yellow" , "assets/Spongebob.png" );
+    //TextureManager::GetInstance()->Load( "yellow" , "assets/Spongebob.png" );
+
+    gameMap = new Map();
+
     return m_IsRunning = true;
 }
 
@@ -33,6 +36,8 @@ void Engine::Update(){
 void Engine::Render(){
     SDL_SetRenderDrawColor( m_Renderer, 0 , 0 , 0 , 0 );
     SDL_RenderClear(m_Renderer);
+
+    gameMap->Draw(m_Renderer);
 
     TextureManager::GetInstance()->Draw( "yellow", 100, 100, 495 , 350 );
     SDL_RenderPresent(m_Renderer);
@@ -50,6 +55,7 @@ void Engine::Events(){
 
 bool Engine::Clean(){
     TextureManager::GetInstance()->Clean();
+    delete gameMap;
     SDL_DestroyRenderer ( m_Renderer );
     SDL_DestroyWindow ( m_Window );
     IMG_Quit();
