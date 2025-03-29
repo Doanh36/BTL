@@ -1,0 +1,60 @@
+# depslib dependency file v1.0
+1743164543 source:c:\users\pc\documents\codeblock\btl-ltnc\main.cpp
+	"Engine.h"
+
+1742876605 c:\users\pc\documents\codeblock\btl-ltnc\src\core\engine.h
+
+1742876089 source:c:\users\pc\documents\codeblock\btl-ltnc\src\core\engine.cpp
+	"Engine.h"
+	<iostream>
+
+1743165514 c:\users\pc\documents\codeblock\btl-ltnc\src\engine.h
+	"SDL.h"
+	"SDL_image.h"
+	"Map.h"
+
+1743178718 source:c:\users\pc\documents\codeblock\btl-ltnc\src\engine.cpp
+	"Engine.h"
+	"TextureManager.h"
+	"Vector2D.h"
+	"Transform.h"
+
+1742961725 c:\users\pc\documents\codeblock\btl-ltnc\graphics\texturemanager.h
+	<string>
+	"SDL.h"
+	<map>
+
+1742961842 c:\users\pc\documents\codeblock\btl-ltnc\src\graphics\texturemanager.h
+	<string>
+	"SDL.h"
+	<map>
+
+1742963148 source:c:\users\pc\documents\codeblock\btl-ltnc\src\graphics\texturemanager.cpp
+	"TextureManager.h"
+	"Engine.h"
+
+1743066807 c:\users\pc\documents\codeblock\btl-ltnc\src\map.h
+	<SDL.h>
+
+1743178700 source:c:\users\pc\documents\codeblock\btl-ltnc\src\map.cpp
+	"Map.h"
+
+1743052636 c:\users\pc\documents\codeblock\btl-ltnc\src\physics\transform.h
+	"Vector2D.h"
+
+1743006296 c:\users\pc\documents\codeblock\btl-ltnc\src\physics\vector2d.h
+	<iostream>
+
+1743071403 source:c:\users\pc\documents\codeblock\btl-ltnc\src\object\pacman.cpp
+	"Pacman.h"
+
+1743165379 c:\users\pc\documents\codeblock\btl-ltnc\src\object\pacman.h
+	"GameObject.h"
+	"TextureManager.h"
+
+1743162740 c:\users\pc\documents\codeblock\btl-ltnc\src\object\gameobject.h
+	"IObject.h"
+	"Transform.h"
+
+1743054904 c:\users\pc\documents\codeblock\btl-ltnc\src\object\iobject.h
+
