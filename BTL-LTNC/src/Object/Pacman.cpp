@@ -45,9 +45,12 @@ void Update(const int maze[MAP_HEIGHT][MAP_WIDTH]); {
 }
 
 void Pacman::Render(SDL_Renderer* renderer) {
+    int drawX = m_x - TILE_SIZE / 2;
+    int drawY = m_y - TILE_SIZE / 2;
+
     TextureManager::GetInstance()->DrawFrame(
         m_textureID,
-        m_x, m_y,
+        drawX, drawY,
         32, 32,         
         0, m_frame,     
         SDL_FLIP_NONE
