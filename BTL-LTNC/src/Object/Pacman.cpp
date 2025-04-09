@@ -7,10 +7,10 @@ Pacman::Pacman(int x, int y, std::string textureID)
       m_frame(0), m_lastFrameTime(SDL_GetTicks()) {}
 
 bool Pacman::CanMove( int newX, int newY,const int maze[MAP_HEIGHT][MAP_WIDTH] ) {
-    int left = newX / TILE_SIZE;
-    int right = (newX + TILE_SIZE - 1) / TILE_SIZE;
-    int top = newY / TILE_SIZE;
-    int bottom = (newY + TILE_SIZE - 1) / TILE_SIZE;
+    int left   = (newX - TILE_SIZE / 2) / TILE_SIZE;
+    int right  = (newX + TILE_SIZE / 2 - 1) / TILE_SIZE;
+    int top    = (newY - TILE_SIZE / 2) / TILE_SIZE;
+    int bottom = (newY + TILE_SIZE / 2 - 1) / TILE_SIZE;
 
     if (left < 0 || right >= MAP_WIDTH || top < 0 || bottom >= MAP_HEIGHT)
         return false;
@@ -24,7 +24,7 @@ bool Pacman::CanMove( int newX, int newY,const int maze[MAP_HEIGHT][MAP_WIDTH] )
 void Update(const int maze[MAP_HEIGHT][MAP_WIDTH]); {
     
     if (SDL_GetTicks() - m_lastFrameTime > m_animDelay) {
-        m_frame = (m_frame + 1) % 2; 
+        m_frame = (m_frame + 1) % 2;
         m_lastFrameTime = SDL_GetTicks();
     }
 
