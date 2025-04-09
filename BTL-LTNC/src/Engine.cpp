@@ -6,9 +6,17 @@
 
 const int MAZE_ROWS = 11;
 const int MAZE_COLS = 20;
+// Vị trí bắt đầu của pacman
+const int start_col = 1;
+const int start_row = 1;
+
+// Tâm Pacman sẽ nằm giữa tile
+int m_x = start_col * TILE_SIZE + TILE_SIZE / 2;
+int m_y = start_row * TILE_SIZE + TILE_SIZE / 2;
+
 
 Engine* Engine::s_Instance = nullptr;
-Pacman pacman(32 , 32, "pacman"); 
+Pacman pacman(m_x , m_y, "pacman"); 
 
 bool Engine::Init(){
     if ( SDL_Init(SDL_INIT_VIDEO) != 0 && IMG_Init( IMG_INIT_JPG | IMG_INIT_PNG ) ) {
