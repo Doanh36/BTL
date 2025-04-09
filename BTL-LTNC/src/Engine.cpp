@@ -8,7 +8,7 @@ const int MAZE_ROWS = 11;
 const int MAZE_COLS = 20;
 
 Engine* Engine::s_Instance = nullptr;
-Pacman pacman(32 , 32, "pacman"); // "pacman" là id của texture đã load
+Pacman pacman(32 , 32, "pacman"); 
 
 bool Engine::Init(){
     if ( SDL_Init(SDL_INIT_VIDEO) != 0 && IMG_Init( IMG_INIT_JPG | IMG_INIT_PNG ) ) {
@@ -46,32 +46,11 @@ void Engine::Render(){
     SDL_SetRenderDrawColor( m_Renderer, 0 , 0 , 0 , 0 );
     SDL_RenderClear(m_Renderer);
 
-    SDL_SetRenderDrawColor(m_Renderer, 100, 100, 100, 255); // Màu xám
-
-// Vẽ các dòng ngang
-for (int i = 0; i <= MAZE_ROWS; i++) {
-    SDL_RenderDrawLine(
-        m_Renderer,
-        0, i * TILE_SIZE,
-        MAZE_COLS * TILE_SIZE, i * TILE_SIZE
-    );
-}
-
-// Vẽ các dòng dọc
-for (int j = 0; j <= MAZE_COLS; j++) {
-    SDL_RenderDrawLine(
-        m_Renderer,
-        j * TILE_SIZE, 0,
-        j * TILE_SIZE, MAZE_ROWS * TILE_SIZE
-    );
-}
-
-
     gameMap->Draw(m_Renderer);
 
     pacman.Render(m_Renderer);
 
-    //TextureManager::GetInstance()->Draw( "pacman", 32, 29, 32, 32 );
+    
     SDL_RenderPresent(m_Renderer);
 }
 
@@ -85,7 +64,7 @@ void Engine::Events(){
 
             case SDL_KEYDOWN:
             case SDL_KEYUP:
-                pacman.HandleInput(event); // 👈 gọi hàm xử lý input của Pacman
+                pacman.HandleInput(event); 
                 break;
         }
     }
