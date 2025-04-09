@@ -7,14 +7,18 @@ Pacman::Pacman(int x, int y, std::string textureID)
       m_frame(0), m_lastFrameTime(SDL_GetTicks()) {}
 
 bool Pacman::CanMove( int newX, int newY,const int maze[MAP_HEIGHT][MAP_WIDTH] ) {
-    int col = newX / TILE_SIZE;
-    int row = newY / TILE_SIZE;
+    int left = newX / TILE_SIZE;
+    int right = (newX + TILE_SIZE - 1) / TILE_SIZE;
+    int top = newY / TILE_SIZE;
+    int bottom = (newY + TILE_SIZE - 1) / TILE_SIZE;
 
-    
-    if (row < 0 || row >= MAP_HEIGHT || col < 0 || col >= MAP_WIDTH)
+    if (left < 0 || right >= MAP_WIDTH || top < 0 || bottom >= MAP_HEIGHT)
         return false;
 
-    return maze[row][col] == 0; 
+    return (maze[top][left] == 0 &&
+            maze[top][right] == 0 &&
+            maze[bottom][left] == 0 &&
+            maze[bottom][right] == 0);
 }
 
 void Update(const int maze[MAP_HEIGHT][MAP_WIDTH]); {
@@ -60,3 +64,4 @@ void Pacman::HandleInput(SDL_Event& e) {
     }
 }
 }
+
