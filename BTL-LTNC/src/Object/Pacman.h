@@ -3,15 +3,16 @@
 
 #include <SDL.h>
 #include <string>
-
+#include "Map.h"
 
 class Pacman {
 public:
     Pacman(int x, int y, std::string textureID);
 
-    void Update();
+    void Update(const int maze[MAP_HEIGHT][MAP_WIDTH]);
     void Render(SDL_Renderer* renderer);
     void HandleInput(SDL_Event& e);
+    bool CanMove(int newX, int newY, const int maze[MAP_HEIGHT][MAP_WIDTH]);
 
 private:
     enum Direction { NONE, UP, DOWN, LEFT, RIGHT };

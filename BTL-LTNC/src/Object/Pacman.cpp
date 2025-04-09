@@ -6,19 +6,37 @@ Pacman::Pacman(int x, int y, std::string textureID)
     : m_x(x), m_y(y), m_textureID(textureID), m_speed(2),
       m_frame(0), m_lastFrameTime(SDL_GetTicks()) {}
 
-void Pacman::Update() {
-    // Cập nhật animation mở – đóng miệng
+bool Pacman::CanMove( int newX, int newY,const int maze[MAP_HEIGHT][MAP_WIDTH] ) {
+    int col = newX / TILE_SIZE;
+    int row = newY / TILE_SIZE;
+
+    
+    if (row < 0 || row >= MAP_HEIGHT || col < 0 || col >= MAP_WIDTH)
+        return false;
+
+    return maze[row][col] == 0; 
+}
+
+void Update(const int maze[MAP_HEIGHT][MAP_WIDTH]); {
+    
     if (SDL_GetTicks() - m_lastFrameTime > m_animDelay) {
-        m_frame = (m_frame + 1) % 2; // 2 frame
+        m_frame = (m_frame + 1) % 2; 
         m_lastFrameTime = SDL_GetTicks();
     }
 
+    int newX = m_x;
+    int newY = m_y;
+
     switch (m_direction) {
-    case UP:    m_y -= m_speed; break;
-    case DOWN:  m_y += m_speed; break;
-    case LEFT:  m_x -= m_speed; break;
-    case RIGHT: m_x += m_speed; break;
-    default: break;
+        case UP:    newY -= m_speed; break;
+        case DOWN:  newY += m_speed; break;
+        case LEFT:  newX -= m_speed; break;
+        case RIGHT: newX += m_speed; break;
+    }
+
+    if (CanMove(newX, newY, maze)) {
+        m_x = newX;
+        m_y = newY;
     }
 }
 
@@ -26,8 +44,8 @@ void Pacman::Render(SDL_Renderer* renderer) {
     TextureManager::GetInstance()->DrawFrame(
         m_textureID,
         m_x, m_y,
-        32, 32,         // kích thước frame
-        0, m_frame,     // row, frame
+        32, 32,         
+        0, m_frame,     
         SDL_FLIP_NONE
     );
 }
