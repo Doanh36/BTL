@@ -30,6 +30,13 @@ void Pacman::Update(const int maze[MAP_HEIGHT][MAP_WIDTH]) {
         m_lastFrameTime = SDL_GetTicks();
     }
 
+    int col = m_x / TILE_SIZE;
+    int row = m_y / TILE_SIZE;
+
+    if (dotMap[row][col] == 1) {
+        dotMap[row][col] = 0; 
+    }
+
     bool isAlignedX = (m_x % TILE_SIZE == TILE_SIZE / 2);
     bool isAlignedY = (m_y % TILE_SIZE == TILE_SIZE / 2);
 
