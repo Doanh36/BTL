@@ -8,8 +8,8 @@
 const int MAZE_ROWS = 11;
 const int MAZE_COLS = 20;
 // Vị trí bắt đầu của pacman
-const int start_col = 1;
-const int start_row = 1;
+const int start_col = 4;
+const int start_row = 2;
 
 // Tâm Pacman sẽ nằm giữa tile
 int m_x = start_col * TILE_SIZE + TILE_SIZE / 2;
@@ -55,13 +55,10 @@ void Engine::Render(){
     SDL_SetRenderDrawColor( m_Renderer, 0 , 0 , 0 , 0 );
     SDL_RenderClear(m_Renderer);
 
-    SDL_SetRenderDrawColor(m_Renderer, 100, 100, 100, 255); // Màu xám
-
     gameMap->Draw(m_Renderer);
 
     pacman.Render(m_Renderer);
 
-    //TextureManager::GetInstance()->Draw( "pacman", 32, 29, 32, 32 );
     SDL_RenderPresent(m_Renderer);
 }
 

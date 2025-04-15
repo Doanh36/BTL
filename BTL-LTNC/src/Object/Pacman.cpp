@@ -7,7 +7,6 @@ Pacman::Pacman(int x, int y, std::string textureID)
       m_frame(0), m_lastFrameTime(SDL_GetTicks()) {}
 
 bool Pacman::CanMove( int newX, int newY, const int maze[MAP_HEIGHT][MAP_WIDTH] ) {
-    // Tính tile mà 4 góc Pacman chạm tới dựa trên tâm (x, y)
     int left   = (newX - TILE_SIZE / 2) / TILE_SIZE;
     int right  = (newX + TILE_SIZE / 2 - 1) / TILE_SIZE;
     int top    = (newY - TILE_SIZE / 2) / TILE_SIZE;
@@ -22,21 +21,43 @@ bool Pacman::CanMove( int newX, int newY, const int maze[MAP_HEIGHT][MAP_WIDTH] 
             maze[bottom][right] == 0);
 }
 
-void Pacman::Update( const int maze[MAP_HEIGHT][MAP_WIDTH]) {
+
+
+void Pacman::Update(const int maze[MAP_HEIGHT][MAP_WIDTH]) {
 
     if (SDL_GetTicks() - m_lastFrameTime > m_animDelay) {
         m_frame = (m_frame + 1) % 2;
         m_lastFrameTime = SDL_GetTicks();
     }
 
-    int newX = m_x;
-    int newY = m_y;
+    bool isAlignedX = (m_x % TILE_SIZE == TILE_SIZE / 2);
+    bool isAlignedY = (m_y % TILE_SIZE == TILE_SIZE / 2);
 
-    switch (m_direction) {
+    if (isAlignedX && isAlignedY && nextDir != currentDir) {
+        int testX = m_x, testY = m_y;
+
+        switch (nextDir) {
+            case UP:    testY -= m_speed; break;
+            case DOWN:  testY += m_speed; break;
+            case LEFT:  testX -= m_speed; break;
+            case RIGHT: testX += m_speed; break;
+            default: break;
+        }
+
+        if (CanMove(testX, testY, maze)) {
+            currentDir = nextDir;
+        }
+    }
+
+
+    int newX = m_x, newY = m_y;
+
+    switch (currentDir) {
         case UP:    newY -= m_speed; break;
         case DOWN:  newY += m_speed; break;
         case LEFT:  newX -= m_speed; break;
         case RIGHT: newX += m_speed; break;
+        default: break;
     }
 
     if (CanMove(newX, newY, maze)) {
@@ -45,26 +66,53 @@ void Pacman::Update( const int maze[MAP_HEIGHT][MAP_WIDTH]) {
     }
 }
 
+
 void Pacman::Render(SDL_Renderer* renderer) {
     int drawX = m_x - TILE_SIZE / 2;
     int drawY = m_y - TILE_SIZE / 2;
 
+    int row = 0;
+
+    switch (currentDir) {
+        case RIGHT:
+            row = 0;
+            break;
+        case LEFT:
+            row = 1;
+            break;
+        case UP:
+            row = 2;
+            break;
+        case DOWN:
+            row = 3;
+            break;
+    }
+
     TextureManager::GetInstance()->DrawFrame(
-        m_textureID,
-        drawX, drawY,
-        32, 32,         // kích thước frame
-        0, m_frame,     // row, frame
-        SDL_FLIP_NONE
-    );
+    m_textureID,
+    drawX, drawY,
+    32, 32,
+    row, m_frame,
+    SDL_FLIP_NONE
+);
 }
 
 void Pacman::HandleInput(SDL_Event& e) {
     if (e.type == SDL_KEYDOWN) {
-    switch (e.key.keysym.sym) {
-        case SDLK_UP:    m_direction = UP; break;
-        case SDLK_DOWN:  m_direction = DOWN; break;
-        case SDLK_LEFT:  m_direction = LEFT; break;
-        case SDLK_RIGHT: m_direction = RIGHT; break;
+        switch (e.key.keysym.sym) {
+            case SDLK_UP:
+                nextDir = UP;
+                break;
+            case SDLK_DOWN:
+                nextDir = DOWN;
+                break;
+            case SDLK_LEFT:
+                nextDir = LEFT;
+                break;
+            case SDLK_RIGHT:
+                nextDir = RIGHT;
+                break;
+        }
     }
 }
-}
+
