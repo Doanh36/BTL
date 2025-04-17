@@ -4,20 +4,16 @@
 #include "Transform.h"
 #include "Pacman.h"
 #include "Map.h"
-
-const int MAZE_ROWS = 11;
-const int MAZE_COLS = 20;
-// Vị trí bắt đầu của pacman
-const int start_col = 4;
-const int start_row = 2;
-
-// Tâm Pacman sẽ nằm giữa tile
-int m_x = start_col * TILE_SIZE + TILE_SIZE / 2;
-int m_y = start_row * TILE_SIZE + TILE_SIZE / 2;
-
+#include "Ghost.h"
 
 Engine* Engine::s_Instance = nullptr;
-Pacman pacman(m_x , m_y, "pacman");
+
+Properties* pacmanProps = new Properties(std::string("pacman"), m_x, m_y, TILE_SIZE, TILE_SIZE);
+Map* m_Map = new Map();
+Pacman* pacman = new Pacman(pacmanProps, m_Map);
+
+Properties* ghostProps = new Properties("ghost", 304, 240, TILE_SIZE, TILE_SIZE);
+GameObject* ghost = new Ghost(ghostProps, m_Map);
 
 bool Engine::Init(){
     if ( SDL_Init(SDL_INIT_VIDEO) != 0 && IMG_Init( IMG_INIT_JPG | IMG_INIT_PNG ) ) {
@@ -38,26 +34,28 @@ bool Engine::Init(){
     }
 
     TextureManager::GetInstance()->Load( "pacman" , "assets/pacman.png");
+    TextureManager::GetInstance()->Load( "ghost" , "assets/blinky icon.png" );
 
     Transform tf;
     tf.Log();
-
-    gameMap = new Map();
-
     return m_IsRunning = true;
 }
 
 void Engine::Update(){
-    pacman.Update( maze );
+    pacman->Update(0.016f);
+    ghost->Update(0.016f);
 }
 
 void Engine::Render(){
+
     SDL_SetRenderDrawColor( m_Renderer, 0 , 0 , 0 , 0 );
     SDL_RenderClear(m_Renderer);
 
-    gameMap->Draw(m_Renderer);
+    m_Map->Draw(m_Renderer);
 
-    pacman.Render(m_Renderer);
+    pacman->Draw();
+
+    ghost->Draw();
 
     SDL_RenderPresent(m_Renderer);
 }
@@ -72,7 +70,7 @@ void Engine::Events(){
 
             case SDL_KEYDOWN:
             case SDL_KEYUP:
-                pacman.HandleInput(event); // 👈 gọi hàm xử lý input của Pacman
+                pacman->HandleInput(event);
                 break;
         }
     }
