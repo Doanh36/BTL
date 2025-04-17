@@ -6,6 +6,7 @@
 const int MAP_WIDTH = 19;
 const int MAP_HEIGHT = 21;
 const int TILE_SIZE = 32;
+
 const int maze[MAP_HEIGHT][MAP_WIDTH] = {
     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
     {1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1},
@@ -36,6 +37,7 @@ public:
     Map();
     ~Map();
     void Draw(SDL_Renderer* renderer);
+    bool CanMove(float x, float y);
 };
 
 #endif
