@@ -1,35 +1,33 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
-#include "IObject.h"
+#include <SDL.h>
 #include "Transform.h"
+#include <vector>
 
-struct Properties{
-    public:
-        Properties* ( std::string textureID, int x, int y, int width, int height, SDL_RendererFlip flip = SDL_FLIP_NONE ){
-            X = x;
-            Y = y;
-            Flip = flip;
-            Width = width;
-            Height = height;
-            TextureID = textureID;
-        }
+struct Properties {
+    std::string TextureID;
+    int Width, Height;
+    float X, Y;
+    SDL_RendererFlip Flip;
 
-    public:
-        std::string TextureID;
-        int Width, Height;
-        float X, Y;
-        SDL_RendererFlip Flip;
-
+    Properties(std::string textureID, int x, int y, int width, int height, SDL_RendererFlip flip = SDL_FLIP_NONE)
+        : TextureID(textureID), X(x), Y(y), Width(width), Height(height), Flip(flip) {}
 };
 
-class GameObject 
+
+class GameObject
 {
     public:
-        GameObject( Properties* props ) m_TextureID( props->TextureID ),
-        m_Width( props->Width ), m_Height( props->Height ), m_Flip( props->Flip ) {
-            m_Transform = new Transform( props->X, props->Y );
-        }
+        GameObject(Properties* props)
+    : m_TextureID(props->TextureID),
+      m_Width(props->Width),
+      m_Height(props->Height),
+      m_Flip(props->Flip)
+{
+    m_Transform = new Transform(props->X, props->Y);
+}
+
         virtual ~GameObject() {}
 
         virtual void Draw() = 0;
