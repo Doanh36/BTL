@@ -23,7 +23,7 @@ struct Properties{
 
 };
 
-class GameObject :: public IObject
+class GameObject 
 {
     public:
         GameObject( Properties* props ) m_TextureID( props->TextureID ),
