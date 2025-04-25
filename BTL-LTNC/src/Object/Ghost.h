@@ -1,31 +1,42 @@
 #ifndef GHOST_H
 #define GHOST_H
 
-#include "GameObject.h"
 #include "TextureManager.h"
+#include "GameObject.h"
 #include "Map.h"
-#include <cstdlib>
-#include <ctime>
+#include "Pacman.h"
+#include <cmath>
+#include <iostream>
 
-class Ghost : public GameObject
-{
-public:
-    Ghost(Properties* props, Map* map);
-
-    void Draw() override;
-
-    void Update(float dt) override;
-
-    void Clean() override;
-
-    void RandomMove();
-
-private:
-    Map* m_Map;
-    Vector2D m_Velocity;
-    const float m_Speed = 2.0f;
-    int m_MoveDelay = 10;
-    int m_MoveCounter = 0;
+enum Direction {
+    LEFT = 0,
+    RIGHT = 1,
+    UP = 2,
+    DOWN = 3,
+    NONE = -1
 };
 
-#endif // GHOST_H
+class Ghost : public GameObject {
+public:
+    Ghost(Properties* props, Map* map, Pacman* pacman);
+
+    virtual void Update(float dt) override;
+    virtual void Draw() override;
+    virtual void Clean() override;
+    int ManhattanDistance(int x1, int y1, int x2, int y2) const;
+
+private:
+    Pacman* m_Pacman;
+    Map* m_Map;
+    Direction m_LastDirection;
+
+    int m_GridX;
+    int m_GridY;
+
+    float m_VelocityX = 0;
+    float m_VelocityY = 0;
+
+    const int m_Speed = 130; 
+};
+
+#endif

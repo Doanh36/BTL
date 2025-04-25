@@ -12,15 +12,15 @@ void Pacman::Update(float dt) {
         m_lastFrameTime = SDL_GetTicks();
     }
 
-    int col = m_Transform->X / TILE_SIZE;
-    int row = m_Transform->Y / TILE_SIZE;
+    int col = m_Transform->position.X / TILE_SIZE;
+    int row = m_Transform->position.Y / TILE_SIZE;
 
     if (dotMap[row][col] == 1) {
         dotMap[row][col] = 0;
     }
 
-    bool isAlignedX = (int(m_Transform->X) % TILE_SIZE == TILE_SIZE / 2);
-    bool isAlignedY = (int(m_Transform->Y) % TILE_SIZE == TILE_SIZE / 2);
+    bool isAlignedX = (int(m_Transform->position.X) % TILE_SIZE == TILE_SIZE / 2);
+    bool isAlignedY = (int(m_Transform->position.Y) % TILE_SIZE == TILE_SIZE / 2);
 
     if (isAlignedX && isAlignedY && nextDir != currentDir) {
         Vector2D testVel;
@@ -32,8 +32,8 @@ void Pacman::Update(float dt) {
             default:    testVel = Vector2D(0, 0); break;
         }
 
-        float testX = m_Transform->X + testVel.X * m_speed;
-        float testY = m_Transform->Y + testVel.Y * m_speed;
+        float testX = m_Transform->position.X + testVel.X * m_speed;
+        float testY = m_Transform->position.Y + testVel.Y * m_speed;
 
         if (m_Map->CanMove(testX, testY)) {
             currentDir = nextDir;
@@ -48,20 +48,21 @@ void Pacman::Update(float dt) {
         default:    m_Velocity = Vector2D(0, 0); break;
     }
 
-    float newX = m_Transform->X + m_Velocity.X * m_speed;
-    float newY = m_Transform->Y + m_Velocity.Y * m_speed;
+    float newX = m_Transform->position.X + m_Velocity.X * m_speed;
+    float newY = m_Transform->position.Y + m_Velocity.Y * m_speed;
 
     if (m_Map->CanMove(newX, newY)) {
-        m_Transform->X = newX;
-        m_Transform->Y = newY;
+        m_Transform->position.X = newX;
+        m_Transform->position.Y = newY;
     }
+
 }
 
 void Pacman::Draw() {
     int offset_X = (SCREEN_WIDTH - MAP_WIDTH * TILE_SIZE) / 2;
     int offset_Y = (SCREEN_HEIGHT - MAP_HEIGHT * TILE_SIZE) / 2;
-    int drawX = m_Transform->X - TILE_SIZE / 2 + 146;
-    int drawY = m_Transform->Y - TILE_SIZE / 2 + 14;
+    int drawX = m_Transform->position.X - TILE_SIZE / 2 + 146;
+    int drawY = m_Transform->position.Y - TILE_SIZE / 2 + 14;
 
     int row = 0;
     switch (currentDir) {
@@ -85,6 +86,16 @@ void Pacman::HandleInput(SDL_Event& e) {
     }
 }
 
+
 void Pacman::Clean() {
     delete m_Transform;
 }
+
+int Pacman::GetTileX() const {
+    return (m_Transform->position.X - TILE_SIZE / 2) / TILE_SIZE;
+}
+
+int Pacman::GetTileY() const {
+    return (m_Transform->position.Y - TILE_SIZE / 2) / TILE_SIZE;
+}
+
