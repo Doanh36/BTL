@@ -1,27 +1,27 @@
 #include "Ghost.h"
 
-Ghost::Ghost(Properties* props, Map* map, Pacman* pacman)
-    : GameObject(props), m_Map(map), m_Pacman(pacman), m_LastDirection(NONE) {}
+Ghost::Ghost(Properties* props, Map* map, Pacman* pacman, GhostType type, Ghost* blinky)
+    : GameObject(props), m_Map(map), m_Pacman(pacman), m_Type(type), m_Blinky(blinky), m_LastDirection(NONE), m_State(CHASE) {}
 
 void Ghost::Draw() {
     int drawX = m_Transform->position.X - TILE_SIZE / 2 + 146;
     int drawY = m_Transform->position.Y - TILE_SIZE / 2 + 14;
 
-    TextureManager::GetInstance()->DrawFrame(m_TextureID,drawX, drawY,m_Width, m_Height,0, 0,m_Flip);
+    TextureManager::GetInstance()->DrawFrame(m_TextureID, drawX, drawY, m_Width, m_Height, 0, 0, m_Flip);
 }
 
 void Ghost::Clean() {}
 
-void Ghost::Update(float dt)
-{
+void Ghost::Update(float dt) {
+    m_State = SCATTER;
     int centerX = (int)(m_Transform->position.X + TILE_SIZE / 2) % TILE_SIZE;
     int centerY = (int)(m_Transform->position.Y + TILE_SIZE / 2) % TILE_SIZE;
 
     bool onTile = (centerX == 0) && (centerY == 0);
 
     if (onTile) {
-        int gridX = (m_Transform->position.X - TILE_SIZE / 2 ) / TILE_SIZE;
-        int gridY = (m_Transform->position.Y - TILE_SIZE / 2 ) / TILE_SIZE;
+        int gridX = (m_Transform->position.X - TILE_SIZE / 2) / TILE_SIZE;
+        int gridY = (m_Transform->position.Y - TILE_SIZE / 2) / TILE_SIZE;
 
         m_GridX = gridX;
         m_GridY = gridY;
@@ -40,7 +40,35 @@ void Ghost::Update(float dt)
         int m_TargetX = pacX;
         int m_TargetY = pacY;
 
-        if (m_Type == PINKY) {
+        // Nếu ghost còn trong nhà
+        if (gridX >= 9 && gridX <= 10 && gridY >= 7 && gridY <= 10) {
+            m_TargetX = houseExitX;
+            m_TargetY = houseExitY;
+        } else {
+            if (m_State == SCATTER) {
+                // Scatter mode: mỗi ghost về góc riêng
+                switch (m_Type) {
+                    case BLINKY:
+                        m_TargetX = 19;
+                        m_TargetY = 3;
+                        break;
+                    case PINKY:
+                        m_TargetX = 4;
+                        m_TargetY = 0;
+                        break;
+                    case INKY:
+                        m_TargetX = 19;
+                        m_TargetY = 16;
+                        break;
+                    case CLYDE:
+                        m_TargetX = -1;
+                        m_TargetY = 17;
+                        break;
+                }
+            }
+            else if (m_State == CHASE) {
+                // Chase mode: hành vi đuổi Pacman
+                if (m_Type == PINKY) {
                     m_TargetX = pacX + 4 * dirX;
                     m_TargetY = pacY + 4 * dirY;
                 }
@@ -65,7 +93,9 @@ void Ghost::Update(float dt)
                         m_TargetY = 17;
                     }
                 }
+                // Blinky giữ target Pacman
             }
+        }
 
         for (int i = 0; i < 4; ++i) {
             if ((m_LastDirection == LEFT && i == RIGHT) || (m_LastDirection == RIGHT && i == LEFT) ||
@@ -93,12 +123,11 @@ void Ghost::Update(float dt)
             m_VelocityX = dx[bestDir] * m_Speed;
             m_VelocityY = dy[bestDir] * m_Speed;
             m_LastDirection = static_cast<Direction>(bestDir);
-
         } else {
             m_VelocityX = 0;
             m_VelocityY = 0;
         }
-    
+    }
 
     float nextX = m_Transform->position.X + m_VelocityX * dt;
     float nextY = m_Transform->position.Y + m_VelocityY * dt;

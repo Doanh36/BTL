@@ -47,6 +47,7 @@ private:
     GhostType m_Type;
     Ghost* m_Blinky = nullptr; 
     Direction m_LastDirection;
+    GhostState m_State = SCATTER;
 
     int m_GridX;
     int m_GridY;
