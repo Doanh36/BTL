@@ -16,18 +16,31 @@ enum Direction {
     NONE = -1
 };
 
+enum GhostType {
+    BLINKY,
+    PINKY,
+    INKY,
+    CLYDE,
+};
+
 class Ghost : public GameObject {
 public:
-    Ghost(Properties* props, Map* map, Pacman* pacman);
+    Ghost(Properties* props, Map* map, Pacman* pacman, GhostType type, Ghost* blinky = nullptr);
 
     virtual void Update(float dt) override;
     virtual void Draw() override;
     virtual void Clean() override;
+
     int ManhattanDistance(int x1, int y1, int x2, int y2) const;
+
+    int GetTileX() const { return m_GridX; }
+    int GetTileY() const { return m_GridY; }
 
 private:
     Pacman* m_Pacman;
     Map* m_Map;
+    GhostType m_Type;
+    Ghost* m_Blinky = nullptr; 
     Direction m_LastDirection;
 
     int m_GridX;
