@@ -66,7 +66,6 @@ void Ghost::Update(float dt)
                     }
                 }
             }
-        }
 
         for (int i = 0; i < 4; ++i) {
             if ((m_LastDirection == LEFT && i == RIGHT) || (m_LastDirection == RIGHT && i == LEFT) ||
@@ -99,7 +98,7 @@ void Ghost::Update(float dt)
             m_VelocityX = 0;
             m_VelocityY = 0;
         }
-    }
+    
 
     float nextX = m_Transform->position.X + m_VelocityX * dt;
     float nextY = m_Transform->position.Y + m_VelocityY * dt;
