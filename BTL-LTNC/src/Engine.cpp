@@ -12,8 +12,10 @@ Properties* pacmanProps = new Properties(std::string("pacman"), m_x, m_y, TILE_S
 Map* m_Map = new Map();
 Pacman* pacman = new Pacman(pacmanProps, m_Map);
 
-Properties* ghostProps = new Properties("ghost", 304, 240, TILE_SIZE, TILE_SIZE);
-GameObject* ghost = new Ghost(ghostProps, m_Map);
+Ghost* blinky = new Ghost(new Properties("blinky", 304, 240, TILE_SIZE, TILE_SIZE), m_Map, pacman, BLINKY);
+Ghost* pinky = new Ghost(new Properties("pinky", 304, 272, TILE_SIZE, TILE_SIZE), m_Map, pacman, PINKY);
+Ghost* inky = new Ghost(new Properties("inky", 336, 304, TILE_SIZE, TILE_SIZE), m_Map, pacman, INKY, blinky);
+Ghost* clyde = new Ghost(new Properties("clyde", 336, 304, TILE_SIZE, TILE_SIZE), m_Map, pacman, CLYDE);
 
 bool Engine::Init(){
     if ( SDL_Init(SDL_INIT_VIDEO) != 0 && IMG_Init( IMG_INIT_JPG | IMG_INIT_PNG ) ) {
@@ -34,7 +36,10 @@ bool Engine::Init(){
     }
 
     TextureManager::GetInstance()->Load( "pacman" , "assets/pacman.png");
-    TextureManager::GetInstance()->Load( "ghost" , "assets/blinky icon.png" );
+    TextureManager::GetInstance()->Load( "blinky" , "assets/blinky icon.png" );
+    TextureManager::GetInstance()->Load( "pinky" , "assets/pinky icon.png" );
+    TextureManager::GetInstance()->Load( "inky" , "assets/inky icon.png" );
+    TextureManager::GetInstance()->Load( "clyde" , "assets/clyde icon.png" );
 
     Transform tf;
     tf.Log();
@@ -43,7 +48,10 @@ bool Engine::Init(){
 
 void Engine::Update(){
     pacman->Update(0.016f);
-    ghost->Update(0.016f);
+    blinky->Update(0.016f);
+    pinky->Update(0.016f);
+    inky->Update(0.016f);
+    clyde->Update(0.016f);
 }
 
 void Engine::Render(){
@@ -55,7 +63,10 @@ void Engine::Render(){
 
     pacman->Draw();
 
-    ghost->Draw();
+    blinky->Draw();
+    pinky->Draw();
+    inky->Draw();
+    clyde->Draw();
 
     SDL_RenderPresent(m_Renderer);
 }
