@@ -1,32 +1,34 @@
 #ifndef PACMAN_H
 #define PACMAN_H
 
-#include <SDL.h>
-#include <string>
+#include "GameObject.h"
 #include "Map.h"
 
+const int start_col = 17;
+const int start_row = 19;
+const int m_x = start_col * TILE_SIZE + TILE_SIZE / 2;
+const int m_y = start_row * TILE_SIZE + TILE_SIZE / 2;
 
-class Pacman {
+class Pacman : public GameObject {
 public:
-    Pacman(int x, int y, std::string textureID);
-
-    void Update(const int maze[MAP_HEIGHT][MAP_WIDTH]);
-    void Render(SDL_Renderer* renderer);
+    Pacman(Properties* props, Map* map);
+    virtual void Draw() override;
+    virtual void Update(float dt) override;
+    virtual void Clean() override;
     void HandleInput(SDL_Event& e);
-    bool CanMove(int newX, int newY, const int maze[MAP_HEIGHT][MAP_WIDTH]);
+    int GetTileX() const;
+    int GetTileY() const;
 
 private:
+    Map* m_Map;
     enum Direction { NONE, UP, DOWN, LEFT, RIGHT };
     Direction currentDir = NONE;
     Direction nextDir = NONE;
-    int m_x, m_y;
-    int m_speed;
-
-    int m_frame;
-    Uint32 m_lastFrameTime;
+    Vector2D m_Velocity;
+    int m_speed = 2;
+    int m_frame = 0;
+    Uint32 m_lastFrameTime = 0;
     const int m_animDelay = 80;
-
-    std::string m_textureID;
 };
 
 #endif

@@ -99,3 +99,14 @@ int Pacman::GetTileY() const {
     return (m_Transform->position.Y - TILE_SIZE / 2) / TILE_SIZE;
 }
 
+int Pacman::GetDirectionX() const {
+    if (currentDir == LEFT) return -1;
+    if (currentDir == RIGHT) return 1;
+    return 0;
+}
+
+int Pacman::GetDirectionY() const {
+    if (currentDir == UP) return -1;
+    if (currentDir == DOWN) return 1;
+    return 0;
+}
