@@ -46,6 +46,9 @@ private:
     int m_GridX;
     int m_GridY;
 
+    const int houseExitX = 9;
+    const int houseExitY = 7;
+
     float m_VelocityX = 0;
     float m_VelocityY = 0;
 
