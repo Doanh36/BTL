@@ -8,6 +8,11 @@
 #include <cmath>
 #include <iostream>
 
+enum GhostState {
+    CHASE,
+    SCATTER,
+};
+
 enum Direction {
     LEFT = 0,
     RIGHT = 1,
