@@ -10,9 +10,7 @@ void Ghost::Draw() {
     TextureManager::GetInstance()->DrawFrame(m_TextureID,drawX, drawY,m_Width, m_Height,0, 0,m_Flip);
 }
 
-void Ghost::Clean() {
-
-}
+void Ghost::Clean() {}
 
 void Ghost::Update(float dt)
 {
@@ -34,12 +32,47 @@ void Ghost::Update(float dt)
         int bestDir = -1;
         int minDistance = 1e9;
 
-        for (int i = 0; i < 4; ++i) {
+        int pacX = m_Pacman->GetTileX();
+        int pacY = m_Pacman->GetTileY();
+        int dirX = m_Pacman->GetDirectionX();
+        int dirY = m_Pacman->GetDirectionY();
 
+        int m_TargetX = pacX;
+        int m_TargetY = pacY;
+
+        if (m_Type == PINKY) {
+                    m_TargetX = pacX + 4 * dirX;
+                    m_TargetY = pacY + 4 * dirY;
+                }
+                else if (m_Type == INKY) {
+                    if (m_Blinky) {
+                        int aheadX = pacX + 2 * dirX;
+                        int aheadY = pacY + 2 * dirY;
+                        int blinkyX = m_Blinky->GetTileX();
+                        int blinkyY = m_Blinky->GetTileY();
+
+                        m_TargetX = aheadX + (aheadX - blinkyX);
+                        m_TargetY = aheadY + (aheadY - blinkyY);
+                    }
+                }
+                else if (m_Type == CLYDE) {
+                    int distToPacman = ManhattanDistance(gridX, gridY, pacX, pacY);
+                    if (distToPacman > 8) {
+                        m_TargetX = pacX;
+                        m_TargetY = pacY;
+                    } else {
+                        m_TargetX = -1;
+                        m_TargetY = 17;
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < 4; ++i) {
             if ((m_LastDirection == LEFT && i == RIGHT) || (m_LastDirection == RIGHT && i == LEFT) ||
-    (m_LastDirection == UP && i == DOWN) || (m_LastDirection == DOWN && i == UP)) {
-    continue;
-}
+                (m_LastDirection == UP && i == DOWN) || (m_LastDirection == DOWN && i == UP)) {
+                continue;
+            }
 
             int newX = gridX + dx[i];
             int newY = gridY + dy[i];
@@ -47,15 +80,13 @@ void Ghost::Update(float dt)
             float pixelX = newX * TILE_SIZE + TILE_SIZE / 2.0f;
             float pixelY = newY * TILE_SIZE + TILE_SIZE / 2.0f;
 
-            int m_TargetX = m_Pacman->GetTileX();
-            int m_TargetY = m_Pacman->GetTileY();
-
             if (m_Map->CanMove(pixelX, pixelY)) {
                 int dist = ManhattanDistance(newX, newY, m_TargetX, m_TargetY);
-            if (dist < minDistance || (dist == minDistance && i == m_LastDirection)) {
-                minDistance = dist;
-                bestDir = i;
-            }
+
+                if (dist < minDistance ) {
+                    minDistance = dist;
+                    bestDir = i;
+                }
             }
         }
 
@@ -74,21 +105,17 @@ void Ghost::Update(float dt)
     float nextY = m_Transform->position.Y + m_VelocityY * dt;
 
     if (m_Map->CanMove(nextX, nextY)) {
-    m_Transform->position.X = nextX;
-    m_Transform->position.Y = nextY;
+        m_Transform->position.X = nextX;
+        m_Transform->position.Y = nextY;
     } else {
-    m_VelocityX = 0;
-    m_VelocityY = 0;
+        m_VelocityX = 0;
+        m_VelocityY = 0;
 
-    int grid_X = static_cast<int>(m_Transform->position.X / TILE_SIZE);
-    int grid_Y = static_cast<int>(m_Transform->position.Y / TILE_SIZE);
-    m_Transform->position.X = grid_X * TILE_SIZE + TILE_SIZE / 2;
-    m_Transform->position.Y = grid_Y * TILE_SIZE + TILE_SIZE / 2;
-
-    std::cout << "[Ghost] Position: " << m_Transform->position.X
-          << ", onTile: " << (onTile ? "YES" : "NO") << "\n";
-
-}
+        int grid_X = static_cast<int>(m_Transform->position.X / TILE_SIZE);
+        int grid_Y = static_cast<int>(m_Transform->position.Y / TILE_SIZE);
+        m_Transform->position.X = grid_X * TILE_SIZE + TILE_SIZE / 2;
+        m_Transform->position.Y = grid_Y * TILE_SIZE + TILE_SIZE / 2;
+    }
 }
 
 int Ghost::ManhattanDistance(int x1, int y1, int x2, int y2) const {
