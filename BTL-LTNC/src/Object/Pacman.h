@@ -4,8 +4,8 @@
 #include "GameObject.h"
 #include "Map.h"
 
-const int start_col = 17;
-const int start_row = 19;
+const int start_col = 9; //9
+const int start_row = 15; //15
 const int m_x = start_col * TILE_SIZE + TILE_SIZE / 2;
 const int m_y = start_row * TILE_SIZE + TILE_SIZE / 2;
 
@@ -18,6 +18,8 @@ public:
     void HandleInput(SDL_Event& e);
     int GetTileX() const;
     int GetTileY() const;
+    int GetDirectionX() const;
+    int GetDirectionY() const;
 
 private:
     Map* m_Map;

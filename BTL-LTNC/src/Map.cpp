@@ -1,11 +1,13 @@
 #include "Map.h"
 #include "Engine.h"
+#include <queue>
+
 int dotMap[MAP_HEIGHT][MAP_WIDTH];
 
 Map::Map() {
     for (int y = 0; y < MAP_HEIGHT; ++y) {
     for (int x = 0; x < MAP_WIDTH; ++x) {
-        if (maze[y][x] == 0)
+        if (maze[y][x] == 0 && !(x >= 5 && x <= 13 && y >= 6 && y <= 12))
             dotMap[y][x] = 1;
         else
             dotMap[y][x] = 0;
@@ -55,12 +57,13 @@ bool Map::CanMove(float newX, float newY) {
     int bottom = (newY + TILE_SIZE / 2 - 1) / TILE_SIZE;
 
     if (left < 0 || right >= MAP_WIDTH || top < 0 || bottom >= MAP_HEIGHT)
-        return false;
+        {return false;}
 
     return (maze[top][left] == 0 &&
             maze[top][right] == 0 &&
             maze[bottom][left] == 0 &&
             maze[bottom][right] == 0);
 }
+
 
 
