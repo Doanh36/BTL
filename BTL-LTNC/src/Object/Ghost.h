@@ -45,9 +45,9 @@ private:
     Pacman* m_Pacman;
     Map* m_Map;
     GhostType m_Type;
-    Ghost* m_Blinky = nullptr; 
+    Ghost* m_Blinky = nullptr;
     Direction m_LastDirection;
-    GhostState m_State = SCATTER;
+    GhostState m_State;
 
     int m_GridX;
     int m_GridY;
@@ -58,7 +58,19 @@ private:
     float m_VelocityX = 0;
     float m_VelocityY = 0;
 
-    const int m_Speed = 130; 
+    const int m_Speed = 130;
+
+    float m_ModeTimer = 0.0f;
+    int m_ModePhase = 0;
+
+    const std::vector<float> m_PhaseDurations = {
+        7.0f, 20.0f,
+        7.0f, 20.0f,
+        5.0f, 20.0f,
+        5.0f
+    };
+
+    void UpdateState(float dt);
 };
 
 #endif
