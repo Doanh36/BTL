@@ -1,7 +1,7 @@
 #include "Ghost.h"
 
 Ghost::Ghost(Properties* props, Map* map, Pacman* pacman, GhostType type, Ghost* blinky)
-    : GameObject(props), m_Map(map), m_Pacman(pacman), m_Type(type), m_Blinky(blinky), m_LastDirection(NONE), m_State(CHASE) {}
+    : GameObject(props), m_Map(map), m_Pacman(pacman), m_Type(type), m_Blinky(blinky), m_LastDirection(NONE), m_State(SCATTER) {}
 
 void Ghost::Draw() {
     int drawX = m_Transform->position.X - TILE_SIZE / 2 + 146;
@@ -13,7 +13,7 @@ void Ghost::Draw() {
 void Ghost::Clean() {}
 
 void Ghost::Update(float dt) {
-    m_State = SCATTER;
+    UpdateState(dt);
     int centerX = (int)(m_Transform->position.X + TILE_SIZE / 2) % TILE_SIZE;
     int centerY = (int)(m_Transform->position.Y + TILE_SIZE / 2) % TILE_SIZE;
 
@@ -148,4 +148,20 @@ void Ghost::Update(float dt) {
 
 int Ghost::ManhattanDistance(int x1, int y1, int x2, int y2) const {
     return abs(x1 - x2) + abs(y1 - y2);
+}
+
+void Ghost::UpdateState(float dt) {
+    m_ModeTimer += dt;
+
+    if (m_ModePhase < m_PhaseDurations.size()) {
+        float duration = m_PhaseDurations[m_ModePhase];
+        if (m_ModeTimer >= duration) {
+            m_State = (m_State == SCATTER) ? CHASE : SCATTER;
+            m_ModeTimer = 0.0f;
+            m_ModePhase++;
+            std::cout << "Ghost switched to " << (m_State == SCATTER ? "SCATTER" : "CHASE") << " phase " << m_ModePhase << "\n";
+        }
+    } else {
+        m_State = CHASE;
+    }
 }
