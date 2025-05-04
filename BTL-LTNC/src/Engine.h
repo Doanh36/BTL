@@ -22,6 +22,7 @@ class Engine {
         void Update();
         void Render();
         void Events();
+        void ResetGame();
 
         inline bool IsRunning(){return m_IsRunning;}
         inline SDL_Renderer* GetRenderer() { return m_Renderer; }
@@ -36,4 +37,4 @@ class Engine {
         static Engine* s_Instance;
 };
 
-#endif // ENGINE_H
+#endif
