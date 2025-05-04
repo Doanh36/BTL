@@ -128,4 +128,3 @@ void Engine::ResetGame()
     clyde->Reset();
     m_Map->Reset();
 }
-
