@@ -44,6 +44,19 @@ public:
     void UpdateState(float dt);
     void SetFrightened();
     void GhostCollision();
+    void Reset();
+
+    const int BLINKY_START_X = 304;
+    const int BLINKY_START_Y = 240;
+
+    const int PINKY_START_X = 304;
+    const int PINKY_START_Y = 272;
+
+    const int INKY_START_X = 304;
+    const int INKY_START_Y = 304;
+
+    const int CLYDE_START_X = 336;
+    const int CLYDE_START_Y = 304;
 
 private:
     Pacman* m_Pacman;
