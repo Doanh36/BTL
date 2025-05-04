@@ -25,6 +25,7 @@ class Engine {
 
         inline bool IsRunning(){return m_IsRunning;}
         inline SDL_Renderer* GetRenderer() { return m_Renderer; }
+        bool m_IsPaused = false;
 
     private:
         Map* gameMap;

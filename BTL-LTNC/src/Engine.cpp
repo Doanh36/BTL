@@ -14,8 +14,10 @@ Pacman* pacman = new Pacman(pacmanProps, m_Map);
 
 Ghost* blinky = new Ghost(new Properties("blinky", 304, 240, TILE_SIZE, TILE_SIZE), m_Map, pacman, BLINKY);
 Ghost* pinky = new Ghost(new Properties("pinky", 304, 272, TILE_SIZE, TILE_SIZE), m_Map, pacman, PINKY);
-Ghost* inky = new Ghost(new Properties("inky", 336, 304, TILE_SIZE, TILE_SIZE), m_Map, pacman, INKY, blinky);
+Ghost* inky = new Ghost(new Properties("inky", 304, 304, TILE_SIZE, TILE_SIZE), m_Map, pacman, INKY, blinky);
 Ghost* clyde = new Ghost(new Properties("clyde", 336, 304, TILE_SIZE, TILE_SIZE), m_Map, pacman, CLYDE);
+
+std::vector<Ghost*> ghostList = { blinky, pinky, inky, clyde };
 
 bool Engine::Init(){
     if ( SDL_Init(SDL_INIT_VIDEO) != 0 && IMG_Init( IMG_INIT_JPG | IMG_INIT_PNG ) ) {
@@ -41,12 +43,16 @@ bool Engine::Init(){
     TextureManager::GetInstance()->Load( "inky" , "assets/inky icon.png" );
     TextureManager::GetInstance()->Load( "clyde" , "assets/clyde icon.png" );
 
+    pacman->SetGhosts(ghostList);
+
     Transform tf;
     tf.Log();
     return m_IsRunning = true;
 }
 
 void Engine::Update(){
+    if (m_IsPaused) return;
+
     pacman->Update(0.016f);
     blinky->Update(0.016f);
     pinky->Update(0.016f);
@@ -80,8 +86,18 @@ void Engine::Events(){
                 break;
 
             case SDL_KEYDOWN:
+                if (event.key.keysym.sym == SDLK_p) {
+                    m_IsPaused = !m_IsPaused;
+                }
+                if (!m_IsPaused) {
+                    pacman->HandleInput(event);
+                }
+                break;
+
             case SDL_KEYUP:
-                pacman->HandleInput(event);
+                if (!m_IsPaused) {
+                    pacman->HandleInput(event);
+                }
                 break;
         }
     }
@@ -94,7 +110,6 @@ bool Engine::Clean(){
     SDL_DestroyWindow ( m_Window );
     IMG_Quit();
     SDL_Quit();
-
 }
 
 void Engine::Quit(){
