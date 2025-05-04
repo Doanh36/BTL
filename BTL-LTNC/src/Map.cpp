@@ -102,3 +102,24 @@ bool Map::HasWon() {
     }
     return false;
 }
+
+void Map::Reset()
+{
+    totalDots = 149;
+    dotsEaten = 0;
+
+    for (int y = 0; y < MAP_HEIGHT; ++y) {
+        for (int x = 0; x < MAP_WIDTH; ++x) {
+            if (maze[y][x] == 0 && !(x >= 5 && x <= 13 && y >= 6 && y <= 12) && !(y == 9)) {
+                dotMap[y][x] = 1;
+            } else {
+                dotMap[y][x] = 0;
+            }
+        }
+    }
+
+    dotMap[2][1] = 2;
+    dotMap[2][MAP_WIDTH - 2] = 2;
+    dotMap[MAP_HEIGHT - 6][1] = 2;
+    dotMap[MAP_HEIGHT - 6][MAP_WIDTH - 2] = 2;
+}
