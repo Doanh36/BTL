@@ -12,7 +12,7 @@ Properties* pacmanProps = new Properties(std::string("pacman"), m_x, m_y, TILE_S
 Map* m_Map = new Map();
 Pacman* pacman = new Pacman(pacmanProps, m_Map);
 
-Ghost* blinky = new Ghost(new Properties("blinky", 304, 240, TILE_SIZE, TILE_SIZE), m_Map, pacman, BLINKY);
+Ghost* blinky = new Ghost(new Properties("blinky", 304 , 240, TILE_SIZE, TILE_SIZE), m_Map, pacman, BLINKY);
 Ghost* pinky = new Ghost(new Properties("pinky", 304, 272, TILE_SIZE, TILE_SIZE), m_Map, pacman, PINKY);
 Ghost* inky = new Ghost(new Properties("inky", 304, 304, TILE_SIZE, TILE_SIZE), m_Map, pacman, INKY, blinky);
 Ghost* clyde = new Ghost(new Properties("clyde", 336, 304, TILE_SIZE, TILE_SIZE), m_Map, pacman, CLYDE);
@@ -89,6 +89,9 @@ void Engine::Events(){
                 if (event.key.keysym.sym == SDLK_p) {
                     m_IsPaused = !m_IsPaused;
                 }
+                if (event.key.keysym.sym == SDLK_r ) {
+                    ResetGame();
+                }
                 if (!m_IsPaused) {
                     pacman->HandleInput(event);
                 }
@@ -115,3 +118,14 @@ bool Engine::Clean(){
 void Engine::Quit(){
     m_IsRunning = false;
 }
+
+void Engine::ResetGame()
+{
+    pacman->Reset();
+    blinky->Reset();
+    pinky->Reset();
+    inky->Reset();
+    clyde->Reset();
+    m_Map->Reset();
+}
+
