@@ -129,3 +129,17 @@ void Pacman::SetGhosts(const std::vector<Ghost*>& ghosts) {
 void Pacman::SetGameOver(bool over) {
     m_GameOver = over;
 }
+
+void Pacman::Reset() {
+    m_Transform->position.X = m_x;
+    m_Transform->position.Y = m_y;
+    currentDir = NONE;
+    nextDir = NONE;
+    m_Velocity = Vector2D(0, 0);
+    m_GameOver = false;
+}
+
+bool Pacman::GetGameOver()
+{
+    return m_GameOver;
+}
