@@ -2,6 +2,7 @@
 #define MAP_H
 
 #include <SDL.h>
+#include <iostream>
 
 const int MAP_WIDTH = 19;
 const int MAP_HEIGHT = 21;
@@ -38,6 +39,11 @@ public:
     ~Map();
     void Draw(SDL_Renderer* renderer);
     bool CanMove(float x, float y);
+    int EatDot(int x, int y);
+    bool HasWon();
+private:
+    int totalDots;
+    int dotsEaten;
 };
 
 #endif
