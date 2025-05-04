@@ -41,6 +41,7 @@ public:
     bool CanMove(float x, float y);
     int EatDot(int x, int y);
     bool HasWon();
+    void Reset();
 private:
     int totalDots;
     int dotsEaten;
