@@ -3,6 +3,8 @@
 
 #include "GameObject.h"
 #include "Map.h"
+#include <vector>
+class Ghost;
 
 const int start_col = 9; //9
 const int start_row = 15; //15
@@ -16,12 +18,15 @@ public:
     virtual void Update(float dt) override;
     virtual void Clean() override;
     void HandleInput(SDL_Event& e);
+    void SetGhosts(const std::vector<Ghost*>& ghosts);
     int GetTileX() const;
     int GetTileY() const;
     int GetDirectionX() const;
     int GetDirectionY() const;
+    void SetGameOver(bool over);
 
 private:
+    bool m_GameOver = false;
     Map* m_Map;
     enum Direction { NONE, UP, DOWN, LEFT, RIGHT };
     Direction currentDir = NONE;
@@ -31,6 +36,7 @@ private:
     int m_frame = 0;
     Uint32 m_lastFrameTime = 0;
     const int m_animDelay = 80;
+    std::vector<Ghost*> m_Ghosts;
 };
 
 #endif

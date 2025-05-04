@@ -1,4 +1,5 @@
 #include "Pacman.h"
+#include "Ghost.h"
 #include "TextureManager.h"
 #include "Engine.h"
 #include "Map.h"
@@ -7,6 +8,7 @@ Pacman::Pacman(Properties* props, Map* map)
     : GameObject(props), m_Map(map), m_Velocity(0, 0) {}
 
 void Pacman::Update(float dt) {
+    if (m_GameOver) return;
     if (SDL_GetTicks() - m_lastFrameTime > m_animDelay) {
         m_frame = (m_frame + 1) % 2;
         m_lastFrameTime = SDL_GetTicks();
@@ -15,8 +17,18 @@ void Pacman::Update(float dt) {
     int col = m_Transform->position.X / TILE_SIZE;
     int row = m_Transform->position.Y / TILE_SIZE;
 
-    if (dotMap[row][col] == 1) {
-        dotMap[row][col] = 0;
+    int result = m_Map->EatDot(col, row);
+    if (result == 1) {
+    } else if (result == 2) {
+        for (Ghost* ghost : m_Ghosts) {
+            ghost->SetFrightened();
+        }
+    }
+
+    if (m_Map->HasWon()) {
+    std::cout << "YOU WIN!" << std::endl;
+    m_GameOver = true;
+    return;
     }
 
     bool isAlignedX = (int(m_Transform->position.X) % TILE_SIZE == TILE_SIZE / 2);
@@ -86,7 +98,6 @@ void Pacman::HandleInput(SDL_Event& e) {
     }
 }
 
-
 void Pacman::Clean() {
     delete m_Transform;
 }
@@ -109,4 +120,12 @@ int Pacman::GetDirectionY() const {
     if (currentDir == UP) return -1;
     if (currentDir == DOWN) return 1;
     return 0;
+}
+
+void Pacman::SetGhosts(const std::vector<Ghost*>& ghosts) {
+    m_Ghosts = ghosts;
+}
+
+void Pacman::SetGameOver(bool over) {
+    m_GameOver = over;
 }
