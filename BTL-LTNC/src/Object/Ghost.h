@@ -11,6 +11,7 @@
 enum GhostState {
     CHASE,
     SCATTER,
+    FRIGHTENED,
 };
 
 enum Direction {
@@ -40,6 +41,9 @@ public:
 
     int GetTileX() const { return m_GridX; }
     int GetTileY() const { return m_GridY; }
+    void UpdateState(float dt);
+    void SetFrightened();
+    void GhostCollision();
 
 private:
     Pacman* m_Pacman;
@@ -49,8 +53,16 @@ private:
     Direction m_LastDirection;
     GhostState m_State;
 
+    bool m_IsFrightened = false;
+    Uint32 m_FrightenedStartTime = 0;
+    Uint32 m_FrightenedDuration = 6000; // 6 seconds
+    int m_NormalSpeed = 130;
+    int m_FrightenedSpeed = 65;
+
     int m_GridX;
     int m_GridY;
+
+    int m_TargetX = 0, m_TargetY = 0;
 
     const int houseExitX = 9;
     const int houseExitY = 7;
@@ -67,10 +79,8 @@ private:
         7.0f, 20.0f,
         7.0f, 20.0f,
         5.0f, 20.0f,
-        5.0f
     };
 
-    void UpdateState(float dt);
 };
 
 #endif
