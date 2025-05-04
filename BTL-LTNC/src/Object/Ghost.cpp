@@ -10,9 +10,20 @@ void Ghost::Draw() {
     TextureManager::GetInstance()->DrawFrame(m_TextureID, drawX, drawY, m_Width, m_Height, 0, 0, m_Flip);
 }
 
-void Ghost::Clean() {}
+void Ghost::Clean() {
+    delete m_Transform;
+}
 
 void Ghost::Update(float dt) {
+    if (m_IsFrightened) {
+        Uint32 currentTime = SDL_GetTicks();
+        if (currentTime - m_FrightenedStartTime >= m_FrightenedDuration) {
+            m_IsFrightened = false;
+        }
+    }
+    int m_Speed = m_IsFrightened ? m_FrightenedSpeed : m_NormalSpeed;
+
+    GhostCollision();
     UpdateState(dt);
     int centerX = (int)(m_Transform->position.X + TILE_SIZE / 2) % TILE_SIZE;
     int centerY = (int)(m_Transform->position.Y + TILE_SIZE / 2) % TILE_SIZE;
@@ -37,8 +48,8 @@ void Ghost::Update(float dt) {
         int dirX = m_Pacman->GetDirectionX();
         int dirY = m_Pacman->GetDirectionY();
 
-        int m_TargetX = pacX;
-        int m_TargetY = pacY;
+        m_TargetX = pacX;
+        m_TargetY = pacY;
 
         // Nếu ghost còn trong nhà
         if (gridX >= 9 && gridX <= 10 && gridY >= 7 && gridY <= 10) {
@@ -112,7 +123,7 @@ void Ghost::Update(float dt) {
             if (m_Map->CanMove(pixelX, pixelY)) {
                 int dist = ManhattanDistance(newX, newY, m_TargetX, m_TargetY);
 
-                if (dist < minDistance ) {
+                if (dist < minDistance) {
                     minDistance = dist;
                     bestDir = i;
                 }
@@ -159,9 +170,26 @@ void Ghost::UpdateState(float dt) {
             m_State = (m_State == SCATTER) ? CHASE : SCATTER;
             m_ModeTimer = 0.0f;
             m_ModePhase++;
-            std::cout << "Ghost switched to " << (m_State == SCATTER ? "SCATTER" : "CHASE") << " phase " << m_ModePhase << "\n";
         }
     } else {
         m_State = CHASE;
+    }
+}
+
+void Ghost::SetFrightened() {
+    m_IsFrightened = true;
+    m_FrightenedStartTime = SDL_GetTicks();
+    m_State = FRIGHTENED;
+}
+
+void Ghost::GhostCollision()
+{
+    int ghostTileX = m_GridX;
+    int ghostTileY = m_GridY;
+    int pacmanTileX = m_Pacman->GetTileX();
+    int pacmanTileY = m_Pacman->GetTileY();
+
+    if (ghostTileX == pacmanTileX && ghostTileY == pacmanTileY && m_State != FRIGHTENED) {
+        m_Pacman->SetGameOver(true);
     }
 }
