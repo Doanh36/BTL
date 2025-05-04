@@ -24,6 +24,8 @@ public:
     int GetDirectionX() const;
     int GetDirectionY() const;
     void SetGameOver(bool over);
+    void Reset();
+    bool GetGameOver();
 
 private:
     bool m_GameOver = false;
