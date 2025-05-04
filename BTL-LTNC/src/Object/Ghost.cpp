@@ -15,6 +15,7 @@ void Ghost::Clean() {
 }
 
 void Ghost::Update(float dt) {
+    if(m_Pacman->GetGameOver()) { return; };
     if (m_IsFrightened) {
         Uint32 currentTime = SDL_GetTicks();
         if (currentTime - m_FrightenedStartTime >= m_FrightenedDuration) {
@@ -23,7 +24,6 @@ void Ghost::Update(float dt) {
     }
     int m_Speed = m_IsFrightened ? m_FrightenedSpeed : m_NormalSpeed;
 
-    GhostCollision();
     UpdateState(dt);
     int centerX = (int)(m_Transform->position.X + TILE_SIZE / 2) % TILE_SIZE;
     int centerY = (int)(m_Transform->position.Y + TILE_SIZE / 2) % TILE_SIZE;
@@ -155,6 +155,8 @@ void Ghost::Update(float dt) {
         m_Transform->position.X = grid_X * TILE_SIZE + TILE_SIZE / 2;
         m_Transform->position.Y = grid_Y * TILE_SIZE + TILE_SIZE / 2;
     }
+
+    GhostCollision();
 }
 
 int Ghost::ManhattanDistance(int x1, int y1, int x2, int y2) const {
@@ -191,5 +193,36 @@ void Ghost::GhostCollision()
 
     if (ghostTileX == pacmanTileX && ghostTileY == pacmanTileY && m_State != FRIGHTENED) {
         m_Pacman->SetGameOver(true);
+        std::cout << "You lose" << std::endl;
     }
+}
+
+void Ghost::Reset()
+{
+    switch (m_Type) {
+        case BLINKY:
+            m_Transform->position.X = BLINKY_START_X - TILE_SIZE / 2;
+            m_Transform->position.Y = BLINKY_START_Y - TILE_SIZE / 2;
+            break;
+        case PINKY:
+            m_Transform->position.X = PINKY_START_X - TILE_SIZE / 2;
+            m_Transform->position.Y = PINKY_START_Y - TILE_SIZE / 2;
+            break;
+        case INKY:
+            m_Transform->position.X = INKY_START_X - TILE_SIZE / 2;
+            m_Transform->position.Y = INKY_START_Y - TILE_SIZE / 2;
+            break;
+        case CLYDE:
+            m_Transform->position.X = CLYDE_START_X - TILE_SIZE / 2;
+            m_Transform->position.Y = CLYDE_START_Y - TILE_SIZE / 2;
+            break;
+    }
+
+    m_VelocityX = 0;
+    m_VelocityY = 0;
+    m_State = SCATTER;
+    m_IsFrightened = false;
+    m_ModeTimer = 0.0f;
+    m_ModePhase = 0;
+    m_LastDirection = NONE;
 }
