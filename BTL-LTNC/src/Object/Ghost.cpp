@@ -14,7 +14,7 @@ void Ghost::Draw() {
         case FRIGHTENED:  row = 1; break;
     };
 
-    TextureManager::GetInstance()->DrawFrame(m_TextureID, drawX, drawY, m_Width, m_Height, row, 0, m_Flip);
+    TextureManager::GetInstance()->DrawFrame(m_TextureID, drawX, drawY, m_Width, m_Height, row, m_frame, m_Flip);
 }
 
 void Ghost::Clean() {
@@ -22,6 +22,11 @@ void Ghost::Clean() {
 }
 
 void Ghost::Update(float dt) {
+    if (SDL_GetTicks() - m_lastFrameTime > m_animDelay) {
+        m_frame = (m_frame + 1) % 2;
+        m_lastFrameTime = SDL_GetTicks();
+    }
+    
     if (m_IsFrightened) {
         Uint32 currentTime = SDL_GetTicks();
         if (currentTime - m_FrightenedStartTime >= m_FrightenedDuration) {
