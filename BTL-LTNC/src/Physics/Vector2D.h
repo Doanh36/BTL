@@ -25,4 +25,4 @@ public:
     }
 };
 
-#endif // VECTOR 2D_H
+#endif
