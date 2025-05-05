@@ -38,7 +38,7 @@ bool Engine::Init(){
     }
 
     TTF_Init();
-    m_Font = TTF_OpenFont("assets/consola.ttf", 48); // hoặc đổi đường dẫn nếu cần
+    m_Font = TTF_OpenFont("assets/consola.ttf", 48);
     if (!m_Font) {
         SDL_Log("Failed to load font: %s", TTF_GetError());
         return false;
