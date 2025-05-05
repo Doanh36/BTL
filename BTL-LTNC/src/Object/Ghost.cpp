@@ -15,7 +15,6 @@ void Ghost::Clean() {
 }
 
 void Ghost::Update(float dt) {
-    if(m_Pacman->GetGameOver()) { return; };
     if (m_IsFrightened) {
         Uint32 currentTime = SDL_GetTicks();
         if (currentTime - m_FrightenedStartTime >= m_FrightenedDuration) {
@@ -193,7 +192,6 @@ void Ghost::GhostCollision()
 
     if (ghostTileX == pacmanTileX && ghostTileY == pacmanTileY && m_State != FRIGHTENED) {
         m_Pacman->SetGameOver(true);
-        std::cout << "You lose" << std::endl;
     }
 }
 

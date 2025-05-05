@@ -8,7 +8,6 @@ Pacman::Pacman(Properties* props, Map* map)
     : GameObject(props), m_Map(map), m_Velocity(0, 0) {}
 
 void Pacman::Update(float dt) {
-    if (m_GameOver) return;
     if (SDL_GetTicks() - m_lastFrameTime > m_animDelay) {
         m_frame = (m_frame + 1) % 2;
         m_lastFrameTime = SDL_GetTicks();

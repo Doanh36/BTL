@@ -22,4 +22,4 @@ class TextureManager
         static TextureManager* s_Instance;
 };
 
-#endif 
+#endif

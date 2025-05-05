@@ -37,6 +37,15 @@ bool Engine::Init(){
         return false;
     }
 
+    TTF_Init();
+    m_Font = TTF_OpenFont("assets/consola.ttf", 48); // hoặc đổi đường dẫn nếu cần
+    if (!m_Font) {
+        SDL_Log("Failed to load font: %s", TTF_GetError());
+        return false;
+    }
+    m_Menu = new MenuManager(m_Renderer, m_Font);
+    m_CurrentState = STATE_MENU;
+
     TextureManager::GetInstance()->Load( "pacman" , "assets/pacman.png");
     TextureManager::GetInstance()->Load( "blinky" , "assets/blinky icon.png" );
     TextureManager::GetInstance()->Load( "pinky" , "assets/pinky icon.png" );
@@ -51,6 +60,7 @@ bool Engine::Init(){
 }
 
 void Engine::Update(){
+    if (m_CurrentState == STATE_MENU) return;
     if (m_IsPaused) return;
 
     pacman->Update(0.016f);
@@ -58,6 +68,8 @@ void Engine::Update(){
     pinky->Update(0.016f);
     inky->Update(0.016f);
     clyde->Update(0.016f);
+
+    CheckGameOver();
 }
 
 void Engine::Render(){
@@ -65,14 +77,28 @@ void Engine::Render(){
     SDL_SetRenderDrawColor( m_Renderer, 0 , 0 , 0 , 0 );
     SDL_RenderClear(m_Renderer);
 
-    m_Map->Draw(m_Renderer);
-
-    pacman->Draw();
-
-    blinky->Draw();
-    pinky->Draw();
-    inky->Draw();
-    clyde->Draw();
+    switch ( m_CurrentState ) {
+        case STATE_MENU:
+            m_Menu->render();
+            m_Menu->RenderTitle();
+            break;
+        case STATE_PLAYING:
+            m_Map->Draw(m_Renderer);
+            pacman->Draw();
+            blinky->Draw();
+            pinky->Draw();
+            inky->Draw();
+            clyde->Draw();
+            break;
+        case STATE_WIN:
+            m_Menu->render();
+            m_Menu->RenderWIN();
+            break;
+        case STATE_LOSE:
+            m_Menu->render();
+            m_Menu->RenderLOSE();
+            break;
+    }
 
     SDL_RenderPresent(m_Renderer);
 }
@@ -89,9 +115,6 @@ void Engine::Events(){
                 if (event.key.keysym.sym == SDLK_p) {
                     m_IsPaused = !m_IsPaused;
                 }
-                if (event.key.keysym.sym == SDLK_r ) {
-                    ResetGame();
-                }
                 if (!m_IsPaused) {
                     pacman->HandleInput(event);
                 }
@@ -103,12 +126,26 @@ void Engine::Events(){
                 }
                 break;
         }
+
+        if (m_CurrentState == STATE_MENU || m_CurrentState == STATE_WIN || m_CurrentState == STATE_LOSE) {
+            bool quit = false;
+            bool startGame = false;
+            m_Menu->handleEvent(event, quit, startGame);
+            if (quit) Quit();
+            if (startGame) {
+                ResetGame();
+                m_CurrentState = STATE_PLAYING;
+            };
+        } else if (m_CurrentState == STATE_PLAYING) {}
     }
 }
 
 bool Engine::Clean(){
     TextureManager::GetInstance()->Clean();
     delete gameMap;
+    delete m_Menu;
+    TTF_CloseFont(m_Font);
+    TTF_Quit();
     SDL_DestroyRenderer ( m_Renderer );
     SDL_DestroyWindow ( m_Window );
     IMG_Quit();
@@ -127,4 +164,13 @@ void Engine::ResetGame()
     inky->Reset();
     clyde->Reset();
     m_Map->Reset();
+}
+
+void Engine::CheckGameOver()
+{
+    if (m_Map->HasWon()) {
+        m_CurrentState = STATE_WIN;
+    } else if (pacman->GetGameOver()) {
+        m_CurrentState = STATE_LOSE;
+    }
 }

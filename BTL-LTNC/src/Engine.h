@@ -4,9 +4,18 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "Map.h"
+#include "MenuManager.h"
+#include "SDL_ttf.h"
 
 #define SCREEN_WIDTH 900
 #define SCREEN_HEIGHT 700
+
+enum GameState {
+    STATE_MENU,
+    STATE_PLAYING,
+    STATE_WIN,
+    STATE_LOSE
+};
 
 class Engine {
 
@@ -23,12 +32,18 @@ class Engine {
         void Render();
         void Events();
         void ResetGame();
+        void ResetToSpawn();
 
         inline bool IsRunning(){return m_IsRunning;}
         inline SDL_Renderer* GetRenderer() { return m_Renderer; }
         bool m_IsPaused = false;
+        void CheckGameOver();
 
     private:
+        MenuManager* m_Menu = nullptr;
+        TTF_Font* m_Font = nullptr;
+        GameState m_CurrentState = STATE_MENU;
+
         Map* gameMap;
         Engine(){}
         SDL_Window* m_Window;

@@ -33,35 +33,20 @@ void Map::Draw(SDL_Renderer* renderer) {
         for (int x = 0; x < MAP_WIDTH; x++) {
 
             if (maze[y][x] == 1) {
-                SDL_Rect wallRect = {
-                    offsetX + x * TILE_SIZE,
-                    offsetY + y * TILE_SIZE,
-                    TILE_SIZE,
-                    TILE_SIZE
-                };
+                SDL_Rect wallRect = {offsetX + x * TILE_SIZE,offsetY + y * TILE_SIZE,TILE_SIZE,TILE_SIZE};
                 SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Màu xanh dương
                 SDL_RenderFillRect(renderer, &wallRect);
             }
 
             if (dotMap[y][x] == 1) {
-                SDL_Rect dotRect = {
-                    offsetX + x * TILE_SIZE + TILE_SIZE / 2 - 2,
-                    offsetY + y * TILE_SIZE + TILE_SIZE / 2 - 2,
-                    4,
-                    4
-                };
-                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+                SDL_Rect dotRect = {offsetX + x * TILE_SIZE + TILE_SIZE / 2 - 2,offsetY + y * TILE_SIZE + TILE_SIZE / 2 - 2,4,4};
+                SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
                 SDL_RenderFillRect(renderer, &dotRect);
             }
 
             if (dotMap[y][x] == 2) {
-                SDL_Rect powerDotRect = {
-                    offsetX + x * TILE_SIZE + TILE_SIZE / 2 - 4,
-                    offsetY + y * TILE_SIZE + TILE_SIZE / 2 - 4,
-                    8,
-                    8
-                };
-                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+                SDL_Rect powerDotRect = {offsetX + x * TILE_SIZE + TILE_SIZE / 2 - 4,offsetY + y * TILE_SIZE + TILE_SIZE / 2 - 4,10,10};
+                SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
                 SDL_RenderFillRect(renderer, &powerDotRect);
             }
         }
