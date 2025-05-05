@@ -94,6 +94,9 @@ private:
         5.0f, 20.0f,
     };
 
+    int m_frame = 0;
+    Uint32 m_lastFrameTime = 0;
+    const int m_animDelay = 80;
 };
 
 #endif
