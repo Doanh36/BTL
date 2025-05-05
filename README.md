@@ -11,7 +11,7 @@ Pac-man là một trò chơi nơi người chơi điều khiển nhân vật pac
  - Sử dụng các phím mũi tên trên bàn phím để di chuyển `pac-man` : Nhấn ↑ để đi lên, ↓ để đi xuống, ← để sang trái, → để sang phải.
  - Nhấn `SPACE` để pause , nhấn `SPACE` thêm lần nữa để tiếp tục chơi. 
  - Ngăn cản bạn hoàn thành trò chơi là 4 con ma: `Blinky`, `Pinky`, `Clyde`, `Inky`,
- - Ăn chấm sức mạnh (thường được gọi là `power dot`) bạn sẽ có một khoảng thời gian có thể chạm vào những con ma mà không thua (lưu ý bạn không thể ăn được các con ma mà chỉ có thể làm chúng giảm tốc độ và đi xuyên qua chúng).
+ - Ăn chấm sức mạnh (thường được gọi là `power dot`) bạn sẽ làm cho những con ma chuyển sang màu xanh và bị làm chậm (trong trạng thái này ma ko thể ăn bạn nhưng bạn cũng ko ăn được ma mà chỉ đi xuyên qua chúng)
 ### CƠ CHẾ THẮNG VÀ THUA:
  - Để chiến thắng bạn cần di chuyển `pac-man` ăn hết tất cả các chấm(dot) có trong mê cung
  - Khi `pac-man` va chạm với bất kỳ con ma nào và những con ma đang không ở trong trạng thái sợ hãi(frighten) thì bạn sẽ thua
