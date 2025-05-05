@@ -19,7 +19,7 @@ Pac-man là một trò chơi nơi người chơi điều khiển nhân vật pac
  - Game chỉ có 2 kết quả là thắng hoặc thua ( `YOU WIN` hoặc `YOU LOSE` )
  - Dùng ↑ và ↓ để chọn NEW GAME ( tiếp tục chơi ) hoặc EXIT ( thoát game )
 ## NGƯỠNG ĐIỂM: 7
-### LÝ DO
+### LÝ DO:
  - Game có đồ hoạ đơn giản
  - Có sử dụng thư viện sdl, sdl image và sdl tff
  - Có animation nhân vật đơn giản
