@@ -1,6 +1,9 @@
 # PAC-MAN - TRẦN HUY DOANH - MSV 24022776 
 ### GIỚI THIỆU 
 Pac-man là một trò chơi nơi người chơi điều khiển nhân vật pac-man hình tròn tránh né những con ma và ăn hết các chấm để giành chiến thắng 
+### CÁCH CÀI ĐẶT GAME
+ - Tải về file `Pac-man.zip`
+ - Giải nén file và chạy file `BTL_LTNC.exe` và trải nghiệm game
 ### TRONG MENU:
  - Dùng ↑ và ↓ để chọn NEW GAME hoặc EXIT
  - Bấm `ENTER` để bắt đầu chơi 
