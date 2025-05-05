@@ -47,10 +47,10 @@ bool Engine::Init(){
     m_CurrentState = STATE_MENU;
 
     TextureManager::GetInstance()->Load( "pacman" , "assets/pacman.png");
-    TextureManager::GetInstance()->Load( "blinky" , "assets/blinky icon.png" );
-    TextureManager::GetInstance()->Load( "pinky" , "assets/pinky icon.png" );
-    TextureManager::GetInstance()->Load( "inky" , "assets/inky icon.png" );
-    TextureManager::GetInstance()->Load( "clyde" , "assets/clyde icon.png" );
+    TextureManager::GetInstance()->Load( "blinky" , "assets/blinky animation.png" );
+    TextureManager::GetInstance()->Load( "pinky" , "assets/pinky animation.png" );
+    TextureManager::GetInstance()->Load( "inky" , "assets/inky animation.png" );
+    TextureManager::GetInstance()->Load( "clyde" , "assets/clyde animation.png" );
 
     pacman->SetGhosts(ghostList);
 
