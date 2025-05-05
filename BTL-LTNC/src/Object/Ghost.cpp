@@ -7,7 +7,14 @@ void Ghost::Draw() {
     int drawX = m_Transform->position.X - TILE_SIZE / 2 + 146;
     int drawY = m_Transform->position.Y - TILE_SIZE / 2 + 14;
 
-    TextureManager::GetInstance()->DrawFrame(m_TextureID, drawX, drawY, m_Width, m_Height, 0, 0, m_Flip);
+    int row = 0;
+    switch (m_State) {
+        case SCATTER: row = 0; break;
+        case CHASE: row = 0; break;
+        case FRIGHTENED:  row = 1; break;
+    };
+
+    TextureManager::GetInstance()->DrawFrame(m_TextureID, drawX, drawY, m_Width, m_Height, row, 0, m_Flip);
 }
 
 void Ghost::Clean() {
