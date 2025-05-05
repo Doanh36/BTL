@@ -112,7 +112,7 @@ void Engine::Events(){
                 break;
 
             case SDL_KEYDOWN:
-                if (event.key.keysym.sym == SDLK_d) {
+                if (event.key.keysym.sym == SDLK_SPACE) {
                     m_IsPaused = !m_IsPaused;
                 }
                 if (!m_IsPaused) {
